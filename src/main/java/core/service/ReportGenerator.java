@@ -1,4 +1,4 @@
-package core.generator;
+package core.service;
 
 import java.util.Map;
 

@@ -1,5 +1,6 @@
-package core.generator;
+package core.service.impl;
 
+import core.service.ReportGenerator;
 import java.util.Map;
 
 public class ReportGeneratorImpl implements ReportGenerator {

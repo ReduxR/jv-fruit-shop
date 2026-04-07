@@ -1,7 +1,7 @@
 package core.strategy.handler;
 
-import core.dao.TransactionDao;
 import core.model.Transaction;
+import core.service.TransactionDao;
 
 public class BalanceHandler extends OperationHandler {
     public BalanceHandler(TransactionDao transactionDao) {

@@ -1,4 +1,4 @@
-package core.service.io;
+package core.service;
 
 public interface Writer {
     void writeToFile(String data, String fileName);
