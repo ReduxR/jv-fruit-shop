@@ -14,7 +14,7 @@ public class OperationStrategyImpl implements OperationStrategy {
     @Override
     public OperationHandler getOperationHandler(Transaction.Operation operation) {
         if (handlers == null || handlers.isEmpty()) {
-            throw new RuntimeException("No operation handler for operation " + operation);
+            throw new RuntimeException("No operation handler for operation: " + operation);
         }
         return handlers.get(operation);
     }

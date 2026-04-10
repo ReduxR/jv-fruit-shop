@@ -1,43 +1,56 @@
 package core.service.impl;
 
+import core.checker.Checker;
 import core.db.Storage;
 import core.service.TransactionDao;
+import java.util.HashMap;
 import java.util.Map;
 
 public class TransactionDaoImpl implements TransactionDao {
     private final Storage storage;
+    private final Checker checker;
     
-    public TransactionDaoImpl(Storage storage) {
+    public TransactionDaoImpl(Storage storage, Checker checker) {
         this.storage = storage;
+        this.checker = checker;
     }
     
     @Override
     public void set(String fruit, int quantity) {
-        storage.getStorage().put(fruit, quantity);
+        checker.validateNewEntry(fruit, quantity);
+        storage.put(fruit, quantity);
     }
 
     @Override
     public void add(String fruit, int quantity) {
-        storage.getStorage().merge(fruit, quantity, Integer::sum);
+        checker.validateFruit(fruit);
+        checker.validateQuantity(quantity);
+
+        int current = storage.getQuantity(fruit)
+                .orElseThrow(() -> new RuntimeException("Cannot find fruit"));
+
+        int newValue = current + quantity;
+        storage.put(fruit, newValue);
     }
 
     @Override
     public void subtract(String fruit, int quantity) {
-        if (!storage.getStorage().containsKey(fruit)) {
-            throw new RuntimeException("Cannot find fruit: " + fruit);
-        }
+        checker.validateFruit(fruit);
+        checker.validateQuantity(quantity);
         
-        int currentValue = storage.getStorage().get(fruit);
+        int currentValue = storage.getQuantity(fruit)
+                .orElseThrow(() -> new RuntimeException("Cannot find fruit"));
+        
         int newValue = currentValue - quantity;
         
         if (newValue < 0) {
-            throw new RuntimeException("Negative balance for: " + fruit);
+            throw new RuntimeException("balance can't be negative");
         }
-        storage.getStorage().put(fruit, newValue);
+        storage.put(fruit, newValue);
     }
-
+    
     @Override
     public Map<String, Integer> getAll() {
-        return storage.getStorage();
+        return new HashMap<>(storage.getStorage());
     }
 }

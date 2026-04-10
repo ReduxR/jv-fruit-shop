@@ -1,12 +1,14 @@
 package core.db;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
-public class Storage {
-    private static final Map<String, Integer> storage = new HashMap<>();
-
-    public Map<String, Integer> getStorage() {
-        return storage;
-    }
+public interface Storage {
+    void put(String key, Integer value);
+    
+    Optional<Integer> getQuantity(String key);
+    
+    boolean contains(String fruit);
+    
+    Map<String, Integer> getStorage();
 }

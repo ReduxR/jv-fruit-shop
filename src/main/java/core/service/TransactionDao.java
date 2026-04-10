@@ -8,7 +8,6 @@ public interface TransactionDao {
     void add(String fruit, int quantity);
     
     void subtract(String fruit, int quantity);
-    
+
     Map<String, Integer> getAll();
-    
 }

@@ -1,6 +1,7 @@
 package core;
 
-import core.db.Storage;
+import core.checker.Checker;
+import core.db.InMemoryStorage;
 import core.model.Transaction;
 import core.service.Converter;
 import core.service.Reader;
@@ -29,10 +30,10 @@ public class Main {
         Reader reader = new CsvReaderImpl();
         List<String> lines = reader.readFile("FileInput.csv");
 
-        Storage storage = new Storage();
+        InMemoryStorage inMemoryStorage = new InMemoryStorage();
+        Checker checker = new Checker(inMemoryStorage);
 
-        TransactionDao transactionDao = new TransactionDaoImpl(storage);
-
+        TransactionDao transactionDao = new TransactionDaoImpl(inMemoryStorage, checker);
         Converter converter = new ConverterCsvImpl(transactionDao);
 
         List<Transaction> transactions = converter.convertCsvLines(lines);
